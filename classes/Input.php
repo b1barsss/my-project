@@ -11,8 +11,11 @@ class Input
         };
     }
 
-    public static function get(string $name): string
+    public static function get(string|null $name = null): string|array
     {
+        if (is_null($name)) {
+            return $_POST ?: $_GET;
+        }
         if (isset($_POST[$name])) {
             return $_POST[$name];
         }

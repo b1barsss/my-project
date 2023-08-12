@@ -22,7 +22,7 @@ class Validate
             $checkWord = $checkArr[$name];
             foreach ($rules as $rule => $value) {
                 if (empty($checkWord)) {
-                    if ($rule === 'required') {
+                    if ($rule === 'required' and $value) {
                         self::addError("Field {$name} is required!");
                     }
                     continue;
@@ -30,12 +30,12 @@ class Validate
                 switch ($rule) {
                     case 'min':
                         if (strlen($checkWord) < $value) {
-                            self::addError("Field {$name} must be at least {$value} characters");
+                            self::addError("Field {$name} must have at least {$value} characters");
                         }
                         break;
                     case 'max':
                         if (strlen($checkWord) > $value) {
-                            self::addError("Field {$name} must be maximum {$value} characters");
+                            self::addError("Field {$name} must have maximum {$value} characters");
                         }
                         break;
                     case 'unique':
@@ -46,6 +46,11 @@ class Validate
                     case 'matches':
                         if ($checkWord !== $checkArr[$value]) {
                             self::addError("Field {$name} doesn't match Field {$value}!");
+                        }
+                        break;
+                    case 'email':
+                        if (!filter_var($checkWord, FILTER_VALIDATE_EMAIL) and $value){
+                            self::addError("Field {$name} is not email!");
                         }
                         break;
                     default:

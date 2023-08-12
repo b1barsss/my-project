@@ -12,11 +12,12 @@ class Database
     private function __construct()
     {
         try {
-            $host = Config::get('mysql.host');
-            $dbname = Config::get('mysql.dbname');
-            $username = Config::get('mysql.username');
-            $password = Config::get('mysql.password');
-            $this->pdo = new PDO("mysql:host={$host};dbname={$dbname}", $username, $password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT]);
+            $connection = Config::get('database.connection');
+            $host = Config::get('database.host');
+            $dbname = Config::get('database.dbname');
+            $username = Config::get('database.username');
+            $password = Config::get('database.password');
+            $this->pdo = new PDO("{$connection}:host={$host};dbname={$dbname}", $username, $password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
         } catch (PDOException $e) {
             die($e->getMessage());
         }
@@ -36,7 +37,7 @@ class Database
         $this->error = false;
         $this->statement = $this->pdo->prepare($query);
 
-        if (count($params)) {
+        if (count($params) > 0) {
             $i = 1;
             foreach ($params as $param) {
                 $this->statement->bindValue($i, $param);
@@ -71,14 +72,14 @@ class Database
             $operator = $params[1];
             $value = $params[2];
             if (in_array($operator, $operators)) {
-                $query = "{$action} FROM {$tableName} WHERE {$column} {$operator} ?";
+                $query = "{$action} FROM `{$tableName}` WHERE {$column} {$operator} ?";
                 $this->query($query, [$value]);
                 return $this;
             }
         }
 
         if (empty($params)) {
-            $query = "{$action} FROM {$tableName}";
+            $query = "{$action} FROM `{$tableName}`";
             $this->query($query);
             return $this;
         }
@@ -96,12 +97,14 @@ class Database
         return !$this->query($query, $data)->error();
     }
 
-    public function update(string $tableName, int|string $id, array $data)
+    public function update(string $tableName, int|string $id, array $data): bool
     {
 
-        $sets = array_map(function ($item) {
-            return "$item=?";
-        }, array_keys($data));
+//        $sets = array_map(function ($item) {
+//            return "$item=?";
+//        }, array_keys($data));
+
+        $sets = array_map(fn ($item) => "$item=?", array_keys($data));
         $sets = implode(',', $sets);
 
         $query = "UPDATE {$tableName} SET {$sets} WHERE id=?";
