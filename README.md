@@ -1,11 +1,17 @@
 # Authorization and registration (велосипед)
-
-### Requirements:  
 ------
+### Functionality:
++ Register user
++ Login (Remember me checkbox, save to cookie)
++ Logout
++ Update (username/password)
+------
+### Requirements:  
 + Set root folder as "`/public`"
 + php8.1  
 + mysql
 ------
+### Guide:
 Configure the config.php file:
 ```php
 return [
@@ -18,7 +24,6 @@ return [
     ],
 ];
 ```
-------
 Create these table on your database.  
 Table `groups` (In this example, if user has group_id 1, then user is admin):
 ```sql
