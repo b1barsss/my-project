@@ -1,4 +1,4 @@
-# Authorization and registration (велосипед)
+# Authorization and registration by using session and cookie (Remember me)
 ------
 ### Functionality:
 + Register user
