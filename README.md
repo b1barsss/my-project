@@ -40,13 +40,13 @@ VALUES (1, 'Administrator', '{\"admin\":1}'), (2, 'Standard user', '')
 ```
 Table `users` (You can modify group_id as you want):
 ```sql
-CREATE TABLE `your_database_name`.`groups`
+CREATE TABLE `your_database_name`.`users`
 (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `username` VARCHAR(255) NOT NULL ,
 `email` VARCHAR(255) NOT NULL ,
 `password` VARCHAR(255) NOT NULL ,
- `group_id` INT NOT NULL DEFAULT '1' ,
+`group_id` INT NOT NULL DEFAULT '1' ,
 PRIMARY KEY (`id`)
 );
 ```
