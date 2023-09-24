@@ -1,4 +1,4 @@
-# Authorization and registration by using session and cookie (Remember me)
+# Authorization and registration by using session and cookie (Регистрация на процедурном)
 ------
 ### Functionality:
 + Register user
